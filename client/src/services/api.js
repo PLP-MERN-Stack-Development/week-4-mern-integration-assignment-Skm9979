@@ -38,69 +38,56 @@ api.interceptors.response.use(
   }
 );
 
-// Post API services
-export const postService = {
-  // Get all posts with optional pagination and filters
-  getAllPosts: async (page = 1, limit = 10, category = null) => {
-    let url = `/posts?page=${page}&limit=${limit}`;
-    if (category) {
-      url += `&category=${category}`;
-    }
-    const response = await api.get(url);
-    return response.data;
-  },
+const API_BASE = 'http://localhost:5000/api';
 
-  // Get a single post by ID or slug
-  getPost: async (idOrSlug) => {
-    const response = await api.get(`/posts/${idOrSlug}`);
-    return response.data;
-  },
+export async function fetchPosts() {
+  const res = await fetch(`${API_BASE}/posts`);
+  return res.json();
+}
 
-  // Create a new post
-  createPost: async (postData) => {
-    const response = await api.post('/posts', postData);
-    return response.data;
-  },
+export async function fetchPost(id) {
+  const res = await fetch(`${API_BASE}/posts/${id}`);
+  return res.json();
+}
 
-  // Update an existing post
-  updatePost: async (id, postData) => {
-    const response = await api.put(`/posts/${id}`, postData);
-    return response.data;
-  },
+export async function createPost(data) {
+  const res = await fetch(`${API_BASE}/posts`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
 
-  // Delete a post
-  deletePost: async (id) => {
-    const response = await api.delete(`/posts/${id}`);
-    return response.data;
-  },
+export async function updatePost(id, data) {
+  const res = await fetch(`${API_BASE}/posts/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
 
-  // Add a comment to a post
-  addComment: async (postId, commentData) => {
-    const response = await api.post(`/posts/${postId}/comments`, commentData);
-    return response.data;
-  },
+export async function deletePost(id) {
+  const res = await fetch(`${API_BASE}/posts/${id}`, {
+    method: 'DELETE',
+  });
+  return res.json();
+}
 
-  // Search posts
-  searchPosts: async (query) => {
-    const response = await api.get(`/posts/search?q=${query}`);
-    return response.data;
-  },
-};
+export async function fetchCategories() {
+  const res = await fetch(`${API_BASE}/categories`);
+  return res.json();
+}
 
-// Category API services
-export const categoryService = {
-  // Get all categories
-  getAllCategories: async () => {
-    const response = await api.get('/categories');
-    return response.data;
-  },
-
-  // Create a new category
-  createCategory: async (categoryData) => {
-    const response = await api.post('/categories', categoryData);
-    return response.data;
-  },
-};
+export async function createCategory(data) {
+  const res = await fetch(`${API_BASE}/categories`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
 
 // Auth API services
 export const authService = {
